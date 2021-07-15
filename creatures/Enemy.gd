@@ -28,3 +28,5 @@ func get_damage():
 	rng.randomize()
 	return randi()%damage.max + damage.min
 	
+func set_collision_shape(shape):
+	add_child(shape)

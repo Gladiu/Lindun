@@ -6,6 +6,8 @@ var player_node
 var map_scene
 var map_node
 
+var golem_scene
+var golem_node
 
 func _ready():
 	# Setting mouse mode to captured so it doesnt leave the window
@@ -21,3 +23,8 @@ func _ready():
 	map_scene = load("res://models/playground/playground.tscn")
 	map_node = map_scene.instance()
 	add_child(map_node)
+	
+	# Loading and instancing golem scene # this is temporary
+	golem_scene = load("res://creatures/undead/Iron_Golem.tscn")
+	golem_node = golem_scene.instance()
+	add_child(golem_node)
