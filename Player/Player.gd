@@ -16,7 +16,7 @@ var max_x_view_angle := float()
 
 
 func _ready():
-	set_mouse_sensitivity(Vector2(get_viewport().get_visible_rect().size.x, get_viewport().get_visible_rect().size.y).normalized()/1000)
+	set_mouse_sensitivity(Vector2(get_viewport().get_visible_rect().size.x, get_viewport().get_visible_rect().size.y).normalized()/10)
 	gravity = Vector3(0, -9.81, 0)
 	air_time = 0
 	jump_speed = 4
@@ -24,7 +24,7 @@ func _ready():
 	air_friction = .05
 	walking_speed = 6.0
 	jumped = false
-	max_x_view_angle = PI / 2
+	max_x_view_angle = 90
 
 
 func set_mouse_sensitivity(new_sens:= Vector2()):
@@ -37,12 +37,9 @@ func spawn_at(spawn_vector: Vector3):
 	set_transform(Transform(Basis(get_transform().basis), spawn_vector))
 
 func clip_vector(vector: Vector3, clip: float):
-	if abs(vector.x) > clip:
-		vector.x = clip * float(vector.x > 0) - clip * float(vector.x < 0)
-	if abs(vector.z) > clip:
-		vector.z = clip * float(vector.z > 0) - clip * float(vector.z < 0)
-	if abs(vector.x) > clip:
-		vector.y = clip * float(vector.y > 0) - clip * float(vector.y < 0)
+	vector.x = clamp(vector.x, -clip, clip)
+	vector.y = clamp(vector.y, -clip, clip)
+	vector.z = clamp(vector.z, -clip, clip)
 	return vector
 	
 func on_ground():
@@ -52,18 +49,16 @@ func _unhandled_input(event):
 	# Defining view orientation
 	if event is InputEventMouseMotion:
 		# Defining angle to rotate the view based on 2D X and Y movement
-		# Defining rotational transform matrices to rotate around x axis and rotate around y axis
 		# Reminder that in mathematics cartesian axis Z is up, and here Y is up becouse it makes more sense in computer gfx
-		var angle_x = $View.get_transform().basis.get_euler().x
-		print($View.get_transform().origin.y)
+		var angle_x = $View.get_rotation_degrees().x
 		var rotx
 		# Limiting max x angle to 90 degrees so the camera works as expected
 		if abs(angle_x - mouse_sensitivity.y * event.get_relative().y) < max_x_view_angle:
-			rotx = Transform(Basis(Vector3(angle_x - mouse_sensitivity.y * event.get_relative().y , 0, 0)),Vector3(0, 0, 0))
+			rotx = angle_x - mouse_sensitivity.y * event.get_relative().y 
 		else:
-			rotx = Transform(Basis(Vector3(float(angle_x > 0) * max_x_view_angle - float(angle_x < 0) * max_x_view_angle  , 0, 0)),Vector3(0, 0, 0))
-		var roty = Transform(Basis(Vector3(0, -mouse_sensitivity.x * event.get_relative().x + $View.get_transform().basis.get_euler().y, 0)),Vector3(0, 0, 0))
-		$View.set_transform(roty * rotx)
+			rotx = clamp(angle_x, -max_x_view_angle, max_x_view_angle)
+		var roty = -mouse_sensitivity.x * event.get_relative().x + $View.get_rotation_degrees().y
+		$View.set_rotation_degrees(Vector3(rotx, roty, 0))
 
 func _physics_process(delta):
 	# Handling movement from keyboard
