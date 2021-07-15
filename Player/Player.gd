@@ -1,18 +1,18 @@
 extends KinematicBody
 
-var mouse_sensitivity := Vector2()
-var velocity := Vector3()
-var ground_friction := float()
-var air_friction := float()
-var gravity := Vector3()
-var inertial_velocity := Vector3()
-var air_time := float()
-var jump_speed := int()
-var walking_speed := float()
-var jumped := bool()
-var inertia := Vector3()
-var previous_position := Vector3()
-var max_x_view_angle := float()
+var mouse_sensitivity : Vector2
+var velocity : Vector3
+var ground_friction :float
+var air_friction : float
+var gravity : Vector3
+var inertial_velocity : Vector3
+var air_time : float
+var jump_speed : int
+var walking_speed : float
+var jumped : bool
+var inertia : Vector3
+var previous_position : Vector3
+var max_x_view_angle : float
 
 
 func _ready():
