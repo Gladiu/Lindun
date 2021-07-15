@@ -12,7 +12,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	# Loading and instancing player scene
-	player_scene = load("res://Player/Player.tscn")
+	player_scene = load("res://player/Player.tscn")
 	player_node = player_scene.instance()
 	add_child(player_node)
 	player_node.spawn_at(Vector3(0,10,0))
