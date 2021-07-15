@@ -1,16 +1,30 @@
 extends Spatial
+# Base class for all enemy types, all enemies should derive from it.
 
+# Those variables are placeholders and should be changed in derived class
+var health = {"max": 2, "current": 1}
+var damage = {"max":5,"min":1 }
+var alive := bool()
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass 
 
+# Used to set enemy to be aggresive on something or someone
+func make_aggro_on(_object):
+	pass
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+# Enemy taking damage and dying if needed.
+func take_damage(damage_taken):
+	health.current -= damage_taken
+	alive = bool(health.current > 0)
+	
+# Healing self by healing use integers pls
+func heal_on_self(healing):
+	health.current = clamp(healing+health.current, 0, health.max)
+
+# Getting damage that has been done by enemy
+func get_damage():
+	var rng = RandomNumberGenerator.new()
+	rng.randomize()
+	return randi()%damage.max + damage.min
+	
