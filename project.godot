@@ -8,6 +8,22 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "Spatial",
+"class": "Enemy",
+"language": "GDScript",
+"path": "res://creatures/Enemy.gd"
+}, {
+"base": "Spatial",
+"class": "Undead",
+"language": "GDScript",
+"path": "res://creatures/Undead.gd"
+} ]
+_global_script_class_icons={
+"Enemy": "",
+"Undead": ""
+}
+
 [application]
 
 config/name="GAME"

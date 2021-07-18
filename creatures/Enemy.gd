@@ -1,17 +1,19 @@
+class_name Enemy
 extends Spatial
 # Base class for all enemy types, all enemies should derive from it.
 
 # Those variables are placeholders and should be changed in derived class
 var health = {"max": 2, "current": 1}
+var speed
 var damage = {"max":5,"min":1 }
-var alive := bool()
+var alive : bool
+var reached_walking_target : bool
+var walking_target : Vector3
+var velocity : Vector3
 
 func _ready():
+	walking_target = Vector3(20, 0, 20)
 	pass 
-
-# Used to set enemy to be aggresive on something or someone
-func make_aggro_on(_object):
-	pass
 
 # Enemy taking damage and dying if needed.
 func take_damage(damage_taken):
@@ -28,5 +30,7 @@ func get_damage():
 	rng.randomize()
 	return randi()%damage.max + damage.min
 	
-func set_collision_shape(shape):
-	add_child(shape)
+func _process(delta):
+	print(get_transform().origin)
+
+

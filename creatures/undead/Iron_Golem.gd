@@ -1,8 +1,7 @@
-extends "res://creatures/Enemy.gd"
+extends "res://creatures/Undead.gd"
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	set_collision_shape($CollisionShape)
+	speed = 1
 
 
