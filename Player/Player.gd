@@ -1,4 +1,6 @@
+class_name Player
 extends KinematicBody
+
 
 var mouse_sensitivity : Vector2
 var velocity : Vector3

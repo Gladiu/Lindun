@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://playground_mesh_lib.tres" type="MeshLibrary" id=1]
+[ext_resource path="res://models/playground/cube.tscn" type="PackedScene" id=2]
 
 [node name="Spatial" type="Spatial"]
 
@@ -12,3 +13,9 @@ data = {
 __meta__ = {
 "_editor_clip_": 0
 }
+
+[node name="cube" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 10, 0, 0, 0, 10, 0, 12, 20.0094 )
+
+[node name="cube2" parent="." instance=ExtResource( 2 )]
+transform = Transform( 1, 0, 0, 0, 10, 0, 0, 0, 10, 0, 12, -23.1829 )

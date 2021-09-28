@@ -1,11 +1,14 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://creatures/undead/Iron_Golem.gd" type="Script" id=1]
 [ext_resource path="res://models/enemies/golem.escn" type="PackedScene" id=2]
 
 [sub_resource type="CylinderShape" id=1]
-radius = 2.06985
-height = 10.4487
+radius = 2.0
+height = 10.0
+
+[sub_resource type="CylinderShape" id=2]
+height = 0.0276841
 
 [node name="Golem" type="Spatial"]
 script = ExtResource( 1 )
@@ -18,3 +21,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
 [node name="CollisionShape" type="CollisionShape" parent="Body"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
 shape = SubResource( 1 )
+
+[node name="Feets" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Feets"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.131653, 0 )
+shape = SubResource( 2 )

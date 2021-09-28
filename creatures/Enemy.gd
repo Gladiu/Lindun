@@ -10,10 +10,17 @@ var alive : bool
 var reached_walking_target : bool
 var walking_target : Vector3
 var velocity : Vector3
+var player_id
+var reaction_time : float
+var gravity : Vector3
+var air_time : float
+var radius : float
 
 func _ready():
-	walking_target = Vector3(20, 0, 20)
+	velocity = Vector3(0, 0, 0)
+	gravity = Vector3(0, -9.81, 0)
 	pass 
+
 
 # Enemy taking damage and dying if needed.
 func take_damage(damage_taken):
@@ -30,7 +37,17 @@ func get_damage():
 	rng.randomize()
 	return randi()%damage.max + damage.min
 	
+# Setting place where enemy should go
+func set_walking_target(target:= Vector3()):
+	walking_target = target
+
+func set_player(player):
+	player_id = player
+
+
+
 func _process(delta):
-	print(get_transform().origin)
+	pass
+
 
 
