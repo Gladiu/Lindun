@@ -2,7 +2,6 @@ extends Node
 
 var player_scene
 var player_node
-var player_id
 
 var map_scene
 var map_node
@@ -18,8 +17,7 @@ func _ready():
 	player_scene = load("res://player/Player.tscn")
 	player_node = player_scene.instance()
 	add_child(player_node)
-	player_node.spawn_at(Vector3(10,10,0))
-	player_id = player_node.get_instance_id()
+	player_node.spawn_at(Vector3(0,10,0))
 
 	# Loading and instancing map scene
 	map_scene = load("res://models/playground/playground.tscn")
@@ -30,7 +28,3 @@ func _ready():
 	golem_scene = load("res://creatures/undead/Iron_Golem.tscn")
 	golem_node = golem_scene.instance()
 	add_child(golem_node)
-	golem_node.set_player(player_id)
-
-func _process(delta):
-	golem_node.set_walking_target(player_node.get_transform().origin)
