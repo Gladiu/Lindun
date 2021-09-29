@@ -6,8 +6,8 @@ var player_node
 var map_scene
 var map_node
 
-var golem_scene
-var golem_node
+var enemies_array = []
+var max_enemy_ammount = 1 
 
 func _ready():
 	# Setting mouse mode to captured so it doesnt leave the window
@@ -24,7 +24,13 @@ func _ready():
 	map_node = map_scene.instance()
 	add_child(map_node)
 	
-	# Loading and instancing golem scene # this is temporary
-	golem_scene = load("res://creatures/undead/Iron_Golem.tscn")
-	golem_node = golem_scene.instance()
-	add_child(golem_node)
+	for i in range(0,max_enemy_ammount):
+		# Loading and instancing individual enemy scenes before adding them
+		# to global enemy array which contains all enemies
+		var temp_enemy_scene = load("res://creatures/undead/Iron_Golem.tscn")
+		enemies_array.append(temp_enemy_scene.instance())
+		add_child(enemies_array[i])
+
+func _process(delta):
+	for enemy in enemies_array:
+		enemy.walk_to(player_node.get_position())

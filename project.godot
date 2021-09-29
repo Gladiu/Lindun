@@ -9,12 +9,12 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Spatial",
+"base": "KinematicBody",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://creatures/Enemy.gd"
 }, {
-"base": "Spatial",
+"base": "KinematicBody",
 "class": "Undead",
 "language": "GDScript",
 "path": "res://creatures/Undead.gd"
