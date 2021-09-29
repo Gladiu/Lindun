@@ -43,5 +43,5 @@ func _process(delta):
 func walk_to(walking_spot):
 	walking_target = walking_spot
 
-func test():
-	print("test")
+func get_alive():
+	return alive

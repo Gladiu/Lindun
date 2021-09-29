@@ -6,4 +6,3 @@ func _ready():
 	rotation_speed = 0.25
 
 
-
