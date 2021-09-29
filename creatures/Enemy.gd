@@ -1,18 +1,25 @@
 class_name Enemy
-extends Spatial
+extends KinematicBody
 # Base class for all enemy types, all enemies should derive from it.
 
 # Those variables are placeholders and should be changed in derived class
 var health = {"max": 2, "current": 1}
-var speed
+var speed : float
+var rotation_speed : float
 var damage = {"max":5,"min":1 }
 var alive : bool
 var reached_walking_target : bool
 var walking_target : Vector3
 var velocity : Vector3
+var air_time : float
+var gravity : float
+var desired_y_angle : float
 
 func _ready():
-	walking_target = Vector3(20, 0, 20)
+	walking_target = Vector3(10, 0, 10)*3 # testing
+	
+	air_time = 0
+	gravity = 9.81
 	pass 
 
 # Enemy taking damage and dying if needed.
@@ -31,6 +38,10 @@ func get_damage():
 	return randi()%damage.max + damage.min
 	
 func _process(delta):
-	print(get_transform().origin)
+	pass
 
+func walk_to(walking_spot):
+	walking_target = walking_spot
 
+func test():
+	print("test")

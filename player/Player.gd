@@ -13,6 +13,7 @@ var jumped : bool
 var inertia : Vector3
 var previous_position : Vector3
 var max_x_view_angle : float
+var waiting_for_cast : bool
 
 
 func _ready():
@@ -25,6 +26,8 @@ func _ready():
 	walking_speed = 6.0
 	jumped = false
 	max_x_view_angle = 90
+	waiting_for_cast = false
+	$View/SwordHurtBox.add_exception(self)
 
 
 func set_mouse_sensitivity(new_sens:= Vector2()):
@@ -46,7 +49,8 @@ func on_ground():
 	return $Feets.get_overlapping_bodies().size() > 0
 	
 func _unhandled_input(event):
-	# Defining view orientation
+	# TODO: When hud will be implemented, should add check if mouse movement is being captured.
+	# Setting view orientation
 	if event is InputEventMouseMotion:
 		# Defining angle to rotate the view based on 2D X and Y movement
 		# Reminder that in mathematics cartesian axis Z is up, and here Y is up becouse it makes more sense in computer gfx
@@ -59,6 +63,14 @@ func _unhandled_input(event):
 			rotx = clamp(angle_x, -max_x_view_angle, max_x_view_angle)
 		var roty = -mouse_sensitivity.x * event.get_relative().x + $View.get_rotation_degrees().y
 		$View.set_rotation_degrees(Vector3(rotx, roty, 0))
+	# Handling mouse button clicks
+	if event is InputEventMouseButton:
+		if event.get_button_index() == 1:
+			$View/SwordHurtBox.set_cast_to(Vector3(0, 0, -1)*10)
+			# Ray cast collision will be handled on next iteration of
+			# _physics_process(delta):, we need to wait untill that happens
+			# and then use it to do damage
+			waiting_for_cast = true
 
 func _physics_process(delta):
 	# Handling movement from keyboard
@@ -111,4 +123,15 @@ func _physics_process(delta):
 		#	velocity.y = 0
 
 	move_and_slide(velocity, gravity, false, 1, 0.78, true)
+
+func get_position():
+	return get_transform().origin
+
+func _process(delta):
+	# Handling weapon dmg
+	if waiting_for_cast:
+		waiting_for_cast = false
+		# Checking if we have hit an area and then sending signal that we have hit an area
+		if($View/SwordHurtBox.get_collider() != null and $View/SwordHurtBox.get_collider().has_method("test")):
+			print("jebło")
 
