@@ -13,9 +13,13 @@ var jumped : bool
 var inertia : Vector3
 var previous_position : Vector3
 var max_x_view_angle : float
-var waiting_for_cast : bool
 var raycast_clock : float
+var left_clicked : bool
+var targeted_object # object thats being looked at by player
 
+signal player_status_changed(health, mana)
+signal targeting_enemy(targeted_object)
+signal targeting_void
 
 func _ready():
 	set_mouse_sensitivity(Vector2(get_viewport().get_visible_rect().size.x, get_viewport().get_visible_rect().size.y).normalized()/10)
@@ -27,8 +31,9 @@ func _ready():
 	walking_speed = 6.0
 	jumped = false
 	max_x_view_angle = 90
-	waiting_for_cast = false
 	$View/RayCast.add_exception(self)
+	connect("targeting_enemy", get_node("../Hud"), "_on_targeting_enemy")
+	connect("targeting_void", get_node("../Hud"), "_on_targeting_void")
 
 
 func set_mouse_sensitivity(new_sens:= Vector2()):
@@ -68,7 +73,9 @@ func _unhandled_input(event):
 	# Handling mouse button clicks
 	if event is InputEventMouseButton:
 		if event.get_button_index() == 1:
-			pass
+			# Later do check if we actually mean to hurt enemy
+			if targeted_object != null and targeted_object.has_method("get_alive"):
+				targeted_object.take_damage(1)
 
 
 func _physics_process(delta):
@@ -129,22 +136,21 @@ func get_position():
 func _process(delta):
 	# Adding time to raycast clock thats being used in _unhandled_input(event) 
 	raycast_clock += delta
+	
 	# Raycasting every 0.2 seconds to know what we are looking at
 	# this should help to display enemy health on hud etc
 	if raycast_clock > 0.3:
 		raycast_clock = 0
 		$View/RayCast.set_cast_to(Vector3(0, 0, -1)*10)
 		# Ray cast collision will be handled on next iteration of
-		# _physics_process(delta):, we need to wait untill that happens
-		waiting_for_cast = true
-	# Handling weapon dmg
-	if waiting_for_cast:
-		waiting_for_cast = false
+		# _physics_process(delta)
+
 		# Now we are checking if we hit something meaningfull and act based on that
-		if($View/RayCast.get_collider() != null):
-			# Checking if what we have hit is something we can kill
-			if($View/RayCast.get_collider().has_method("get_alive")):
-				print("asd")
-				# Make enemy take damage
-				# Display its health on hud
+		if $View/RayCast.get_collider() == null:
+			emit_signal("targeting_void")
+		if($View/RayCast.get_collider() != null and $View/RayCast.get_collider().has_method("get_alive")):
+			targeted_object = $View/RayCast.get_collider()
+			emit_signal("targeting_enemy", targeted_object)
+
+
 

@@ -5,7 +5,7 @@
 [sub_resource type="CylinderShape" id=1]
 radius = 0.947446
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape" id=2]
 extents = Vector3( 0.1, 1, 0.1 )
 
 [node name="Player" type="KinematicBody"]
@@ -30,4 +30,4 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.365258, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Feets"]
 transform = Transform( 1, 0, 0, 0, 0.01, 0, 0, 0, 1, 0, 0.432853, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 2 )

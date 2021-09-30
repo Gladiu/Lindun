@@ -13,3 +13,14 @@ func _ready():
 
 func Init_Hud():
 	pass
+
+func _on_targeting_void():
+	$Enemy_Status.visible = false
+	print("asdasddsa")
+
+func _on_targeting_enemy(targeted_enemy):
+	$Enemy_Status.visible = true
+	if targeted_enemy.alive:
+		$Enemy_Status.health((targeted_enemy.health.current/targeted_enemy.health.max))
+	else:
+		$Enemy_Status.health(0)
