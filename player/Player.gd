@@ -14,6 +14,7 @@ var inertia : Vector3
 var previous_position : Vector3
 var max_x_view_angle : float
 var waiting_for_cast : bool
+var raycast_clock : float
 
 
 func _ready():
@@ -27,7 +28,7 @@ func _ready():
 	jumped = false
 	max_x_view_angle = 90
 	waiting_for_cast = false
-	$View/SwordHurtBox.add_exception(self)
+	$View/RayCast.add_exception(self)
 
 
 func set_mouse_sensitivity(new_sens:= Vector2()):
@@ -63,14 +64,12 @@ func _unhandled_input(event):
 			rotx = clamp(angle_x, -max_x_view_angle, max_x_view_angle)
 		var roty = -mouse_sensitivity.x * event.get_relative().x + $View.get_rotation_degrees().y
 		$View.set_rotation_degrees(Vector3(rotx, roty, 0))
+		
 	# Handling mouse button clicks
 	if event is InputEventMouseButton:
 		if event.get_button_index() == 1:
-			$View/SwordHurtBox.set_cast_to(Vector3(0, 0, -1)*10)
-			# Ray cast collision will be handled on next iteration of
-			# _physics_process(delta):, we need to wait untill that happens
-			# and then use it to do damage
-			waiting_for_cast = true
+			pass
+
 
 func _physics_process(delta):
 	# Handling movement from keyboard
@@ -128,10 +127,24 @@ func get_position():
 	return get_transform().origin
 
 func _process(delta):
+	# Adding time to raycast clock thats being used in _unhandled_input(event) 
+	raycast_clock += delta
+	# Raycasting every 0.2 seconds to know what we are looking at
+	# this should help to display enemy health on hud etc
+	if raycast_clock > 0.3:
+		raycast_clock = 0
+		$View/RayCast.set_cast_to(Vector3(0, 0, -1)*10)
+		# Ray cast collision will be handled on next iteration of
+		# _physics_process(delta):, we need to wait untill that happens
+		waiting_for_cast = true
 	# Handling weapon dmg
 	if waiting_for_cast:
 		waiting_for_cast = false
-		# Checking if we have hit an area and then sending signal that we have hit an area
-		if($View/SwordHurtBox.get_collider() != null and $View/SwordHurtBox.get_collider().has_method("test")):
-			print("jebło")
+		# Now we are checking if we hit something meaningfull and act based on that
+		if($View/RayCast.get_collider() != null):
+			# Checking if what we have hit is something we can kill
+			if($View/RayCast.get_collider().has_method("get_alive")):
+				print("asd")
+				# Make enemy take damage
+				# Display its health on hud
 

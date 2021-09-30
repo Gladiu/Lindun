@@ -3,6 +3,9 @@ extends Node
 var player_scene
 var player_node
 
+var hud_scene
+var hud_node
+
 var map_scene
 var map_node
 
@@ -18,6 +21,11 @@ func _ready():
 	player_node = player_scene.instance()
 	add_child(player_node)
 	player_node.spawn_at(Vector3(0,10,0))
+
+	# Loading and instancing hud scene
+	hud_scene = load("res://hud/Hud.tscn")
+	hud_node = hud_scene.instance()
+	add_child(hud_node)
 
 	# Loading and instancing map scene
 	map_scene = load("res://models/playground/playground.tscn")
