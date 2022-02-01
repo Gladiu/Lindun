@@ -2,12 +2,12 @@
 
 importer="scene"
 type="PackedScene"
-path="res://.import/sword.fbx-2a31879becf4a93b1a104a2686c9dee8.scn"
+path="res://.import/sword.escn-798707b62df254c46b869c348276c707.scn"
 
 [deps]
 
-source_file="res://models/items/sword.fbx"
-dest_files=[ "res://.import/sword.fbx-2a31879becf4a93b1a104a2686c9dee8.scn" ]
+source_file="res://models/items/sword.escn"
+dest_files=[ "res://.import/sword.escn-798707b62df254c46b869c348276c707.scn" ]
 
 [params]
 
@@ -20,7 +20,8 @@ nodes/use_legacy_names=false
 materials/location=1
 materials/storage=1
 materials/keep_on_reimport=true
-meshes/compress=true
+meshes/octahedral_compression=true
+meshes/compress=4286
 meshes/ensure_tangents=true
 meshes/storage=0
 meshes/light_baking=0

@@ -17,6 +17,8 @@ var raycast_clock : float
 var left_clicked : bool
 var targeted_object # object thats being looked at by player
 
+var item_main
+
 signal player_status_changed(health, mana)
 signal targeting_enemy(targeted_object)
 signal targeting_void
@@ -34,6 +36,13 @@ func _ready():
 	$View/RayCast.add_exception(self)
 	connect("targeting_enemy", get_node("../Hud"), "_on_targeting_enemy")
 	connect("targeting_void", get_node("../Hud"), "_on_targeting_void")
+	
+	# Loading items
+	var item_scene = load("res://models/items/sword.tscn")
+	item_main = item_scene.instance()
+	$View.add_child(item_main)
+	item_main.set_transform(Transform(Basis(Vector3(0,0,1), Vector3(0,1,0), Vector3(1,0,0)), Vector3(1, -1, -1)))
+	
 
 
 func set_mouse_sensitivity(new_sens:= Vector2()):
@@ -151,6 +160,13 @@ func _process(delta):
 		if($View/RayCast.get_collider() != null and $View/RayCast.get_collider().has_method("get_alive")):
 			targeted_object = $View/RayCast.get_collider()
 			emit_signal("targeting_enemy", targeted_object)
+	
+	# Handling item display
+	#if false:
+		
+		#map_scene = load("res://models/playground/playground.tscn")
+		#map_node = map_scene.instance()
+		#add_child(map_node)
 
 
 
