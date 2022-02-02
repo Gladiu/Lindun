@@ -1,9 +1,41 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://player/Player.gd" type="Script" id=1]
+[ext_resource path="res://models/items/sword.tscn" type="PackedScene" id=2]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.947446
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 90, 0 ) ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Swing"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1, 1.5 ),
+"transitions": PoolRealArray( 6.06286, 0.0980732, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 90, 0 ), Vector3( 45, 90, -45 ), Vector3( 90, 90, -90 ), Vector3( 0, 90, 0 ) ]
+}
 
 [sub_resource type="BoxShape" id=2]
 extents = Vector3( 0.1, 1, 0.1 )
@@ -24,6 +56,15 @@ fov = 110.0
 [node name="RayCast" type="RayCast" parent="View"]
 enabled = true
 cast_to = Vector3( 0, 0, -1 )
+
+[node name="MainHand" type="Spatial" parent="View"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.5, -0.5, -0.5 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="View/MainHand"]
+anims/RESET = SubResource( 4 )
+anims/Swing = SubResource( 3 )
+
+[node name="sword" parent="View/MainHand" instance=ExtResource( 2 )]
 
 [node name="Feets" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.365258, 0 )

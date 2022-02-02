@@ -16,7 +16,6 @@ func Init_Hud():
 
 func _on_targeting_void():
 	$Enemy_Status.visible = false
-	print("asdasddsa")
 
 func _on_targeting_enemy(targeted_enemy):
 	$Enemy_Status.visible = true

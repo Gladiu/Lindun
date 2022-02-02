@@ -40,8 +40,7 @@ func _ready():
 	# Loading items
 	var item_scene = load("res://models/items/sword.tscn")
 	item_main = item_scene.instance()
-	$View.add_child(item_main)
-	item_main.set_transform(Transform(Basis(Vector3(0,0,1), Vector3(0,1,0), Vector3(1,0,0)), Vector3(1, -1, -1)))
+	$View/MainHand.add_child(item_main)
 	
 
 
@@ -82,6 +81,10 @@ func _unhandled_input(event):
 	# Handling mouse button clicks
 	if event is InputEventMouseButton:
 		if event.get_button_index() == 1:
+			#Swing item DEBUG
+			$View/MainHand/AnimationPlayer.play("Swing",-1,2,false)
+			
+			
 			# Later do check if we actually mean to hurt enemy
 			if targeted_object != null and targeted_object.has_method("get_alive"):
 				targeted_object.take_damage(1)
